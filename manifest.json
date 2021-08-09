@@ -1,0 +1,19 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Chia (XCH) Wallet ",
+  "short_name": "Chia Wallet",
+  "scope": "/",
+  "display": "browser",
+  "start_url": "https://chiaswap.eth.link/",
+  "background_color": "#000000",
+  "theme_color": "transparent",
+  "description": "Web Wallet app for Chia - XCH",
+  "orientation": "any",
+  "related_applications": [],
+  "prefer_related_applications": "false",
+  "icons": [],
+  "url": "https://chiaswap.eth.link",
+  "generated": true,
+  "screenshots": []
+}

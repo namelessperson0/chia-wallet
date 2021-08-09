@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chia Wallet Store </title>
+    <script src="qrcode.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="hourGlass.css">
+    <link rel="stylesheet" type="text/css" href="tooltipC.css">
+<script src="balance.js"></script>  
+        
+
+
+    <link rel="manifest" href="manifest.json">
+    </link>
+    <style>
+        @font-face {
+            font-family: SourceSansPro;
+            src: url(SourceSansPro-Regular.ttf);
+        }
+
+        body {
+            font-size: 1.1em;
+            background-color: #EEEEEE;
+            font-family: SourceSansPro;
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+
+        }
+
+        #header {
+            background: linear-gradient(300deg, green 0%, #0D3746 100%);
+            color: #fafafa;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+
+
+        .child.textMes {
+            margin: 30px 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            padding: 15px;
+            background-color: white;
+        }
+
+        button {
+            background: rgb(13, 55, 70);
+            color: burlywood;
+            border-radius: 2px;
+            font-weight: bold;
+            padding: 20px 5px;
+            margin: 3px 15px;
+            /* border: none; */
+            cursor: pointer;
+            /* display: flex; */
+            flex: 0 1 24%;
+            border-radius: 20px;
+            font-size: 88%;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+        }
+
+        @media only screen and (max-width: 400px) {
+            button {
+                flex: 0 1 40%;
+                padding: 5px 2px;
+                margin: 3px 10px;
+            }
+        }
+
+
+
+        .item1 div {
+            margin: 20px 0;
+        }
+
+        .item2 {
+            /* margin: 30px; */
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .options {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            padding: 5% 3%;
+            background-color: white;
+        }
+
+
+        .overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2;
+        }
+
+        .text {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            font-size: 150%;
+            color: white;
+            transform: translate(-25%, -25%);
+            width: 100%;
+            padding: 3%;
+
+        }
+
+
+        input#seed_phrase {
+            /* display: block; */
+            width: 90%;
+            font-size: 80%;
+
+        }
+
+        #sendAndReceive {
+            display: none;
+            padding: 20px;
+
+        }
+
+        #qr_code {
+            display: flex;
+            justify-content: center;
+            margin: 3%;
+
+        }
+
+        div#seed_phraseD {
+            border-style: dotted;
+            margin: 5px 30px 010px;
+            border-color: mediumvioletred;
+        }
+
+        #address {
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+        }
+
+
+
+
+        @media only screen and (max-width: 800px) {
+            span#address {
+                font-size: 48%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header" class="container">
+        <div class="child">
+            <h3> Chia Wallet </h3>
+        </div>
+    </div>
+
+
+    <div class="container" id="createAndRestore">
+        <div class="child options" style="margin-top: 30px;">
+            <div class="item1">
+                You have two options.
+            </div>
+
+            <div class="item2" style="display:block">
+                <button id="createWallet">Create Wallet</button>
+                <button id="restoreWallet">Restore Wallet</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" id="sendAndReceive">
+        <div class="child options">
+
+            <div class="item1">
+                <div id="balD"> XCH (Chia) balance is <span id="XCHBalance">
+                        <div class="lds-roller">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </span> </div>
+
+                <div id="addD">XCH address is
+
+
+                    <span onclick="Clipboard_CopyTo()" onmouseout="outFunc()" id="address"
+                        title="Copy Address to Clipboard">
+
+                    </span>
+                    <span class="tooltip">
+
+                        <span class="tooltiptext" id="myTooltip">Copied</span>
+
+                        <button onclick="Clipboard_CopyTo()" onmouseout="outFunc()" title="Copy Address to Clipboard">
+                            Copy Address
+                        </button>
+                    </span>
+
+                    <script>
+                        function Clipboard_CopyTo() {
+                            var tempInput = document.createElement("input");
+                            tempInput.value = localStorage.getItem("XCH_address");
+                            document.body.appendChild(tempInput);
+                            tempInput.select();
+                            document.execCommand("copy");
+                            document.body.removeChild(tempInput);
+                            document.querySelector("#myTooltip").style.visibility = "visible"
+                            document.querySelector("#myTooltip").style.opacity = "1"
+                        }
+
+                        function outFunc() {
+                            document.querySelector("#myTooltip").style.transition = "all 1s ease-in-out";
+                            document.querySelector("#myTooltip").style.opacity = "0"
+                        }
+
+
+                    </script>
+
+                    <input style="display: none;" type="text" value="" id="address2">
+                </div>
+
+
+
+
+
+
+            </div>
+
+
+            <div class="item2">
+                <button id="show_seed">
+                    <div>
+                        <img class="logo" src="secure.png" alt="Show XCH chia seed phrase">
+                    </div>
+                    <div>
+                        Show Seed phrase
+                    </div>
+                </button>
+
+
+                <button id="show_QR">
+                    <div>
+                        <img class="logo" src="qr-code.png" alt="Show XCH chia qr code">
+                    </div>
+                    <div>
+                        Show QR code
+                    </div>
+                </button>
+
+                <button id="send">
+                    <div>
+                        <img class="logo" src="send.png" alt="send XCH chia">
+                    </div>
+                    <div>
+                        Send XCH (Coming Soon) </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="overlayCreate" class="overlay">
+        <div class="text">It takes around 30 to 60 seconds to create a Chia Wallet. Enjoy the silence till then. <div
+                class="lds-hourglass"></div>
+        </div>
+        <div class="closeBtnComponent"></div>
+
+    </div>
+
+    <div id="overlayRestore" class="overlay">
+        <div class="text">Type your seed phrase
+            <input id="seed_phrase" type="text">
+            <button id="submitRestore">Restore</button>
+            <div style="display: none;" id="restoreLoader" class="lds-hourglass"></div>
+        </div>
+        <div class="closeBtnComponent"></div>
+
+    </div>
+
+
+    <div id="overlayQR" class="overlay">
+
+        <div class="text" style="text-align: center;">QR code to receive XCH is below
+
+
+            <div id="qr_code"></div>
+
+        </div>
+
+        <div class="closeBtnComponent"></div>
+
+    </div>
+
+
+    <div id="overlaySeed" class="overlay">
+        <div class="text">Your seed phrase is
+            <div id="seed_phraseD"></div>
+            <!-- <input style="display: none;" type="text" value="" id="seed_phraseD2"> -->
+            <div class="item2">
+                <!-- <button id="copy_seed">Copy Seed phrase</button> -->
+                <span class="tooltip">
+
+                    <span class="tooltiptext" id="myTooltip2">Copied</span>
+
+                    <button onclick="copySeed()" onmouseout="outFunc2()" title="Copy Address to Clipboard">
+                        Copy Seed phrase </button>
+                </span>
+                <button id="download"> Download Seed Phrase</button>
+            </div>
+        </div>
+        <div class="closeBtnComponent"></div>
+    </div>
+
+    <script>
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+
+        function copySeed() {
+
+            var tempInput = document.createElement("input");
+            tempInput.value = localStorage.getItem("seed_phrase");
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            document.querySelector("#myTooltip2").style.visibility = "visible"
+            document.querySelector("#myTooltip2").style.opacity = "1"
+        }
+
+        function outFunc2() {
+            document.querySelector("#myTooltip2").style.transition = "all 1s ease-in-out";
+            document.querySelector("#myTooltip2").style.opacity = "0"
+        }
+
+
+        document.querySelector("#download").addEventListener("click", function () {
+            download("XCH_backup.txt", localStorage.getItem("seed_phrase"));
+        })
+    </script>
+
+    <script>
+
+        async function balanceSelfHosted() {
+
+            try {
+                const keyGenAPI = await fetch("https://api.chiawallet.store:32253/balanceN?fingerprintNo=" + localStorage.getItem("fingerprintNo"));
+                const keyGenJSON = await keyGenAPI.json()
+
+                if ("errNo" in keyGenJSON) {
+                    alert("Please restore your wallet with seed phrase")
+                    localStorage.clear();
+                    window.location.reload();
+                }
+
+                else {
+                    document.querySelector("#XCHBalance").innerText = keyGenJSON.balance;
+                }
+            }
+            catch {
+                alert("Some Error in fetching balance. Contact admin@chiawallet.store and blame him")
+            }
+        }
+
+        async function balance()
+        {
+            try {
+                console.log("hello");
+                // import {balance3rdP} from './balance.js';
+
+                var balance = await balance3rdP(localStorage.getItem("XCH_address"))
+
+                document.querySelector("#XCHBalance").innerText = balance;
+
+            }
+            catch (err){
+                console.log(err);
+                alert("Some Error in fetching balance. Contact admin@chiawallet.store and blame him")
+            }
+        }
+
+        function changeScreens() {
+
+            document.querySelector("#createAndRestore").remove()
+
+            document.querySelector("#overlayCreate").style.display = "none";
+            document.querySelector("#overlayRestore").style.display = "none";
+
+            document.querySelector("#sendAndReceive").style.display = "block";
+            // new QRCode(document.getElementById("qr_code"), localStorage.getItem("XCH_address"));
+
+            document.querySelector("#address").innerText = localStorage.getItem("XCH_address")
+
+
+
+            balance()
+        }
+
+
+        document.querySelector("#createWallet").addEventListener("click", createWalletFn);
+        async function createWalletFn() {
+            try {
+                document.getElementById("overlayCreate").style.display = "block";
+
+                const keyGenAPI = await fetch("https://api.chiawallet.store:32253/keyGen");
+                const keyGenJSON = await keyGenAPI.json()
+                localStorage.setItem('seed_phrase', keyGenJSON.seed_phrase);
+                localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
+                localStorage.setItem('XCH_address', keyGenJSON.XCH_address);
+                changeScreens();
+            }
+            catch {
+                alert("Some Error. Contact admin@chiawallet.store and blame him")
+            }
+        }
+
+
+        document.querySelector("#show_seed").addEventListener("click", show_seed);
+        document.querySelector("#show_QR").addEventListener("click", show_qr);
+
+        function show_qr() {
+            document.querySelector("#overlayQR").style.display = "block";
+            document.getElementById("qr_code").innerHTML = ""
+            new QRCode(document.getElementById("qr_code"), localStorage.getItem("XCH_address"));
+
+        }
+
+
+        var x = document.querySelectorAll(".closeBtnComponent");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].addEventListener("click", closeBtn);
+        }
+
+        // document.querySelector("#closeBtnComponent").addEventListener("click", closeBtn);
+        function closeBtn() {
+            document.getElementById("overlaySeed").style.display = "none";
+            document.getElementById("overlayQR").style.display = "none";
+
+
+        }
+
+
+        function show_seed() {
+            console.log("sssss");
+            document.getElementById("overlaySeed").style.display = "block";
+            document.querySelector("#seed_phraseD").innerHTML = localStorage.getItem("seed_phrase")
+            // document.querySelector("#seed_phraseD2").innerHTML = localStorage.getItem("seed_phrase")
+
+        }
+
+        document.querySelector("#restoreWallet").addEventListener("click", restoreWalletFnS);
+        document.querySelector("#submitRestore").addEventListener("click", restoreWalletFn);
+
+
+        function restoreWalletFnS() {
+            document.getElementById("overlayRestore").style.display = "block";
+        }
+        async function restoreWalletFn() {
+            try {
+                document.querySelector("#restoreLoader").style.display = "block"
+
+                const keyGenAPI = await fetch(`https://api.chiawallet.store:32253/restore?seed_phrase="${document.querySelector("#seed_phrase").value}"`);
+                const keyGenJSON = await keyGenAPI.json()
+                localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
+                localStorage.setItem('XCH_address', keyGenJSON.XCH_address);
+                localStorage.setItem('seed_phrase', document.querySelector("#seed_phrase").value);
+                console.log(keyGenJSON);
+                changeScreens();
+            }
+            catch {
+                alert("Some Error. Contact admin@chiawallet.store and blame him")
+            }
+        }
+    </script>
+    <script>
+        if (localStorage.getItem("XCH_address") !== null) {
+            changeScreens();
+        }
+    </script>
+    <!-- 
+    <script>
+        let v = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        if (v < 820) {
+            // document.querySelector("#address").innerText = document.querySelector("#address").innerText.substring(0, 8) + "....." + document.querySelector("#address").innerText.slice(-8)
+        
+        }
+    </script> -->
+
+    <script src="closeBtn.js"></script>
+
+    
+    </body>
+
+</html>
