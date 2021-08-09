@@ -381,7 +381,7 @@
         async function balanceSelfHosted() {
 
             try {
-                const keyGenAPI = await fetch("https://api.chiawallet.store:32253/balanceN?fingerprintNo=" + localStorage.getItem("fingerprintNo"));
+                const keyGenAPI = await fetch("https://api.librefins.com:32253/balanceN?fingerprintNo=" + localStorage.getItem("fingerprintNo"));
                 const keyGenJSON = await keyGenAPI.json()
 
                 if ("errNo" in keyGenJSON) {
@@ -439,7 +439,7 @@
             try {
                 document.getElementById("overlayCreate").style.display = "block";
 
-                const keyGenAPI = await fetch("https://api.chiawallet.store:32253/keyGen");
+                const keyGenAPI = await fetch("https://api.librefins.com:32253/keyGen");
                 const keyGenJSON = await keyGenAPI.json()
                 localStorage.setItem('seed_phrase', keyGenJSON.seed_phrase);
                 localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
@@ -497,7 +497,7 @@
             try {
                 document.querySelector("#restoreLoader").style.display = "block"
 
-                const keyGenAPI = await fetch(`https://api.chiawallet.store:32253/restore?seed_phrase="${document.querySelector("#seed_phrase").value}"`);
+                const keyGenAPI = await fetch(`https://api.librefins.com:32253/restore?seed_phrase="${document.querySelector("#seed_phrase").value}"`);
                 const keyGenJSON = await keyGenAPI.json()
                 localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
                 localStorage.setItem('XCH_address', keyGenJSON.XCH_address);
