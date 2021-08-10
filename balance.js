@@ -30,7 +30,7 @@
               })
             })
             var apiJ = await apiO.json()
-            balance = Number(apiJ.data.balance.aggregate.sum.amount) / 1000000000000;
+            balance = (Number(apiJ.data.balance.aggregate.sum.amount) / 1000000000000).toFixed(3);
             console.log(balance);
             return balance
           }
