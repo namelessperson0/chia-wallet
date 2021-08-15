@@ -151,12 +151,30 @@
             cursor: pointer;
         }
 
+
+
+        .icons {
+            position: absolute;
+            right: 10px;
+            top: 25px;
+        }
+
+        .icons img {
+            width: 25px;
+            height: 25px;
+            padding: 3px;
+        }
+
         .logo {
             width: 32px;
             height: 32px;
         }
 
-
+        #logo
+        {
+            width: 36px;
+            height: 36px;
+        }
 
 
         @media only screen and (max-width: 800px) {
@@ -170,7 +188,17 @@
 <body>
     <div id="header" class="container">
         <div class="child">
-            <h3> Chia Wallet </h3>
+            <h2> <img src="images/logo.png" id="logo" alt=""> LibreFins Wallet for Chia (XCH)</h2>
+        </div>
+
+        <div class="icons">
+            <a href="https://github.com/namelessperson0/chia-wallet"> <img src="images/git.png" alt=""> </a>
+            <a href="https://twitter.com/ChiaWallet"> <img src="images/twitter.png" alt=""> </a>
+            <a href="https://www.reddit.com/r/chiawallet"> <img src="images/reddit.png" alt=""> </a>
+            <a href="https://keybase.io/team/chiaswap"> <img src="images/keybase.png" alt=""> </a>
+
+
+
         </div>
     </div>
 
