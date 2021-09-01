@@ -409,7 +409,7 @@
         async function balanceSelfHosted() {
 
             try {
-                const keyGenAPI = await fetch("https://api.librefins.com:32253/balanceN?fingerprintNo=" + localStorage.getItem("fingerprintNo"));
+                const keyGenAPI = await fetch("https://api.librefins.com:8080/balanceN?fingerprintNo=" + localStorage.getItem("fingerprintNo"));
                 const keyGenJSON = await keyGenAPI.json()
 
                 if ("errNo" in keyGenJSON) {
@@ -423,7 +423,7 @@
                 }
             }
             catch {
-                alert("Some Error in fetching balance. Contact admin@chiawallet.store and blame him")
+                alert("Some Error in fetching balance. Contact hello@librefins.com and blame him")
             }
         }
 
@@ -440,7 +440,7 @@
             }
             catch (err){
                 console.log(err);
-                alert("Some Error in fetching balance. Contact admin@chiawallet.store and blame him")
+                alert("Some Error in fetching balance. Contact hello@librefins.com and blame him")
             }
         }
 
@@ -467,7 +467,7 @@
             try {
                 document.getElementById("overlayCreate").style.display = "block";
 
-                const keyGenAPI = await fetch("https://api.librefins.com:32253/keyGen");
+                const keyGenAPI = await fetch("https://api.librefins.com:8080keyGen");
                 const keyGenJSON = await keyGenAPI.json()
                 localStorage.setItem('seed_phrase', keyGenJSON.seed_phrase);
                 localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
@@ -475,7 +475,7 @@
                 changeScreens();
             }
             catch {
-                alert("Some Error. Contact admin@chiawallet.store and blame him")
+                alert("Some Error. Contact hello@librefins.com and blame him")
             }
         }
 
@@ -525,7 +525,7 @@
             try {
                 document.querySelector("#restoreLoader").style.display = "block"
 
-                const keyGenAPI = await fetch(`https://api.librefins.com:32253/restore?seed_phrase="${document.querySelector("#seed_phrase").value}"`);
+                const keyGenAPI = await fetch(`https://api.librefins.com:8080/restore?seed_phrase="${document.querySelector("#seed_phrase").value}"`);
                 const keyGenJSON = await keyGenAPI.json()
                 localStorage.setItem('fingerprintNo', keyGenJSON.fingerprintNo);
                 localStorage.setItem('XCH_address', keyGenJSON.XCH_address);
